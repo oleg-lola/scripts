@@ -1,0 +1,16 @@
+[Unit]
+Description=Jenkins
+After=network.target
+Requires=network.target
+
+[Service]
+Type=simple
+EnvironmentFile=/etc/sysconfig/jenkins
+ExecStart=/usr/bin/java ${JENKINS_JAVA_OPTIONS} -DJENKINS_HOME=/home/jenkins -jar /home/jenkins/jenkins.war --httpPort=${JENKINS_PORT} --daemon --logfile=/var/log/jenkins/jenkins.log --simpleAccessLogger.file=/var/log/jenkins/access_log
+Restart=always
+User=jenkins
+RestartSec=20
+
+[Install]
+WantedBy=multi-user.target
+

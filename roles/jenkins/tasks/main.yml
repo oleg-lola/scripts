@@ -1,0 +1,51 @@
+---
+- name: Add user jenkins
+  user:
+    name: jenkins
+    shell: /bin/bash
+    state: present
+    groups: wheel
+    append: yes
+
+- name: Download Jenkins file from net
+  get_url:
+    url: http://mirrors.jenkins.io/war-stable/latest/jenkins.war
+    dest: /home/jenkins/
+    owner: jenkins
+    group: jenkins
+    mode: 0644
+
+- name: Copy jenkins unit vars file
+  file:
+    src: systd_jenks.txt
+    dest: /etc/sysconfig/jenkins
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+- name: Copy jenkins unit file
+  file:
+    src: systd_unit_jenks
+    dest: /etc/systemd/system/multi-user.target.wants/jenkins.service
+    owner: root
+    group: root
+    mode: "u=rw,g=r,o=r"
+
+#- name: systemd reload daemon
+#  shell: systemctl daemon-reload
+
+- name: Restart Jenkins service
+  systemd:
+    state: restarted
+    daemon_reload: yes
+    name: jenkins.service
+#    enabled: yes
+
+- name: init password jenkin
+  shell: cat /home/jenkins/secrets/initialAdminPassword
+  changed_when: false
+  register: result
+
+- name: print init password jenkins
+  debug:
+    var: result.stdout
