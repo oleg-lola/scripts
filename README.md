@@ -1,3 +1,3 @@
 # scripts
 
-Dev branch
+QA branch
