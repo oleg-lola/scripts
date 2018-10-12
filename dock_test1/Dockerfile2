@@ -1,0 +1,7 @@
+FROM python:2.7.15-alpine3.6
+WORKDIR /usr/app
+RUN pip install requests
+COPY ./miniserv2.py ./
+COPY ./appy ./appy
+EXPOSE 8000
+CMD ["/usr/local/bin/python", "miniserv2.py"]

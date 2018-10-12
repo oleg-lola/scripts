@@ -1,0 +1,6 @@
+FROM python:2.7.15-alpine3.6
+WORKDIR /usr/app
+RUN pip install redis requests
+COPY ./app-server_22.py ./
+COPY ./appy ./appy/
+CMD ["/usr/local/bin/python", "app-server_22.py"]

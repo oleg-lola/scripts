@@ -1,0 +1,21 @@
+version: "3"
+services:
+        redis:
+          image: 'redis'
+
+        nginx:
+          restart: always
+          build:
+            dockerfile: Dockerfile.dev
+            context: ./nginx
+          ports:
+            - '8080:80'
+
+        app:
+          build:
+            dockerfile: Dockerfile
+            context: .
+          ports:
+            - "8000:8000"
+          volumes:
+                  - ./appy:/usr/app/appy:Z
