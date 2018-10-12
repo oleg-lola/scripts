@@ -7,6 +7,8 @@ REDIS_HOST = '127.0.0.1'
 r = redis.StrictRedis(host=REDIS_HOST, port=6379, db=0)
 r.set('get_num', 0)
 r.set('post_num', 0)
+r.set('get_fib', 0)
+r.set('post_fib', 0)
 
 def fib(index):
     if index < 2:
@@ -21,8 +23,6 @@ def push(comm, n):
         get_fib = fib(int(get_num))
         r.set('get_num', get_num)
         r.set('get_fib', get_fib)
-        print (get_num)
-        print (get_fib)
     if comm == 'post':
         post_num = int(n)
         post_fib = fib(int(post_num))
@@ -40,7 +40,6 @@ def new_conn(sock):
             break
         comm = data.split(",")[0]
         n = data.split(",")[1]
-        #print ("COMMAND: " + comm + "    NUMBER: " + n)
         push(comm, n)
     conn.close()
 
@@ -49,6 +48,7 @@ sock.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
 sock.bind(('0.0.0.0', 9999))
 sock.listen(1)
 
+print ("Starting new worker process on port  9999.")
 try:
     while True:
         new_conn(sock)

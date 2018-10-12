@@ -50,20 +50,19 @@ class S(BaseHTTPRequestHandler):
                 global get_num
                 get_num += 1
                 str = ("get,{},").format(get_num)
-                #print (str)
+                quote = get_quotes()
+                #hasher(quote)
                 if socksend(str) == False:
                     print "Socket fucked up"
                     exit
                 if self.path == "/main.html":
                     g_num, g_fib, p_num, p_fib = get_cache()
-                    print (g_num, p_num, g_fib, p_fib)
-                    quote = get_quotes()
-                    #hasher(quote)
+                    #print (g_num, p_num, g_fib, p_fib)
                     content = f.format(g_num, p_num, g_fib, p_fib, quote)
                 elif self.path == "/index.html":
                     g_num, g_fib, p_num, p_fib = get_cache()
-                    print (g_num, p_num, g_fib, p_fib)
-                    content = f.format(g_num, p_num, p_fib)
+                    #print (g_num, p_num, g_fib, p_fib)
+                    content = f.format(g_num, p_num, quote)
                 else:
                     content = f
                 self.send_response(200)
